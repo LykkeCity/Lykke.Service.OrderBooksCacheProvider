@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Net;
+using Autofac;
 using Core;
 using Core.Services;
 using Lykke.RabbitMqBroker.Subscriber;
@@ -11,13 +12,19 @@ namespace Services
     {
         public static void BindServices(this ContainerBuilder ioc, OrderBooksCacheProviderSettings settings)
         {
-            var redis = ConnectionMultiplexer.Connect(settings.CacheSettings.RedisInternalHost);
+            string ipAddress = settings.CacheSettings.RedisInternalHost;
+            if (!IPAddress.TryParse(ipAddress, out IPAddress tmp))
+            {
+                var addresses = Dns.GetHostAddressesAsync(ipAddress).Result;
+                ipAddress = addresses[0].ToString();
+            }
+            var redis = ConnectionMultiplexer.Connect(ipAddress);
 
             ioc.RegisterInstance(redis).SingleInstance();
             ioc.Register(
                 c =>
                     c.Resolve<ConnectionMultiplexer>()
-                        .GetServer(settings.CacheSettings.RedisInternalHost, settings.CacheSettings.RedisPort));
+                        .GetServer(ipAddress, settings.CacheSettings.RedisPort));
 
             ioc.Register(
                 c =>
