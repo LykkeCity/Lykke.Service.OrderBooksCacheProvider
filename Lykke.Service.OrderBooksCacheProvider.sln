@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C495CC04-267B-4AB2-B942-AE0969784731}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B70A28A7-03AF-46BD-87FD-9EF49F4464E1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastucture", "Infrastucture", "{734D6328-7BAF-4467-A848-D8C6F419A8EB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Service.OrderBooksCacheProvider", "src\Lykke.Service.OrderBooksCacheProvider\Lykke.Service.OrderBooksCacheProvider.csproj", "{203425DB-4EDF-4B04-ABE4-FEE890BBC8AF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "src\Core\Core.csproj", "{EB19EAC0-F7A1-458D-908B-AE39D1B0CDDF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "src\Repositories\Repositories.csproj", "{5B2FD1F4-E3B3-4CFE-A0C0-844F82747443}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "src\Services\Services.csproj", "{2F501A10-99F9-4523-AB36-479FDFC91DDB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{203425DB-4EDF-4B04-ABE4-FEE890BBC8AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{203425DB-4EDF-4B04-ABE4-FEE890BBC8AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{203425DB-4EDF-4B04-ABE4-FEE890BBC8AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{203425DB-4EDF-4B04-ABE4-FEE890BBC8AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB19EAC0-F7A1-458D-908B-AE39D1B0CDDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB19EAC0-F7A1-458D-908B-AE39D1B0CDDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB19EAC0-F7A1-458D-908B-AE39D1B0CDDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB19EAC0-F7A1-458D-908B-AE39D1B0CDDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B2FD1F4-E3B3-4CFE-A0C0-844F82747443}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B2FD1F4-E3B3-4CFE-A0C0-844F82747443}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B2FD1F4-E3B3-4CFE-A0C0-844F82747443}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B2FD1F4-E3B3-4CFE-A0C0-844F82747443}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F501A10-99F9-4523-AB36-479FDFC91DDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F501A10-99F9-4523-AB36-479FDFC91DDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F501A10-99F9-4523-AB36-479FDFC91DDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F501A10-99F9-4523-AB36-479FDFC91DDB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{734D6328-7BAF-4467-A848-D8C6F419A8EB} = {C495CC04-267B-4AB2-B942-AE0969784731}
+		{203425DB-4EDF-4B04-ABE4-FEE890BBC8AF} = {C495CC04-267B-4AB2-B942-AE0969784731}
+		{EB19EAC0-F7A1-458D-908B-AE39D1B0CDDF} = {734D6328-7BAF-4467-A848-D8C6F419A8EB}
+		{5B2FD1F4-E3B3-4CFE-A0C0-844F82747443} = {734D6328-7BAF-4467-A848-D8C6F419A8EB}
+		{2F501A10-99F9-4523-AB36-479FDFC91DDB} = {734D6328-7BAF-4467-A848-D8C6F419A8EB}
+	EndGlobalSection
+EndGlobal
