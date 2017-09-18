@@ -1,5 +1,4 @@
-FROM microsoft/dotnet:runtime
-ENTRYPOINT ["dotnet", "Lykke.Service.OrderBooksCacheProvider.dll"]
-ARG source=.
+FROM microsoft/aspnetcore:2.0
 WORKDIR /app
-COPY $source .
+COPY . .
+ENTRYPOINT ["dotnet", "Lykke.Service.OrderBooksCacheProvider.dll"]

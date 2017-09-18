@@ -48,8 +48,6 @@ namespace Lykke.Service.OrderBooksCacheProvider.Binders
             });
 
             ioc.RegisterInstance(redis).As<IDistributedCache>();
-
-            ioc.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
         }
     }
 }
