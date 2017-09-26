@@ -30,7 +30,7 @@ namespace Services
             }
             catch (Exception ex)
             {
-                await _log.WriteErrorAsync("OrderBooksHandler", "HandleOrderBook", orderBook.ToJson(), ex);
+                throw new Exception($"{nameof(HandleOrderBook)} exception, orderbook: {orderBook.ToJson()}", ex);
             }
         }
     }
