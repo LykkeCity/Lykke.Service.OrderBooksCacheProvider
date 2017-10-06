@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Common.Log;
 using Core.Domain;
 using Core.Services;
@@ -13,14 +14,16 @@ namespace Services
         private readonly IOrderBooksHandler _orderBooksHandler;
         private readonly RabbitMqSubscriber<OrderBook> _connector;
 
-        public OrderBookReader(RabbitMqSubscriberSettings settings,
+        public OrderBookReader(RabbitMqSubscriptionSettings settings,
             IOrderBooksHandler orderBooksHandler,
             ILog log)
         {
             _orderBooksHandler = orderBooksHandler;
 
             _connector =
-                new RabbitMqSubscriber<OrderBook>(settings)
+                new RabbitMqSubscriber<OrderBook>(settings,
+                        new ResilientErrorHandlingStrategy(log, settings, TimeSpan.FromSeconds(10),
+                            next: new DefaultErrorHandlingStrategy(log, settings)))
                     .SetMessageDeserializer(new OrderBookDeserializer())
                     .SetMessageReadStrategy(new MessageReadWithTemporaryQueueStrategy())
                     .Subscribe(HandleData)

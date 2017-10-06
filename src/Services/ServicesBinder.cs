@@ -32,11 +32,11 @@ namespace Services
                         .GetDatabase());
 
             var exchangeName = settings.MatchingEngine.RabbitMq.ExchangeOrderbook;
-            var rabbitSettings = new RabbitMqSubscriberSettings
+            var rabbitSettings = new RabbitMqSubscriptionSettings
             {
                 ConnectionString = settings.MatchingEngine.RabbitMq.GetConnectionString(),
                 QueueName = $"{exchangeName}.OrderBooksCacheProvider",
-                ExchangeName = exchangeName,
+                ExchangeName = exchangeName
             };
 
 
