@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -70,7 +69,8 @@ namespace Services
 
         private void ClearExistingRecords()
         {
-            _redisDatabase.KeyDelete(_redisServer.Keys().ToArray());
+	        var keys = _redisServer.Keys(pattern: _settings.CacheSettings.FinanceDataCacheInstance + "*").ToArray();
+	        _redisDatabase.KeyDelete(keys);
         }
     }
 }

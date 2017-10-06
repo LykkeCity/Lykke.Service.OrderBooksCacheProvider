@@ -6,6 +6,7 @@ using Common.Log;
 using Core;
 using Core.Services;
 using Lykke.Service.OrderBooksCacheProvider.Binders;
+using Lykke.SettingsReader;
 using Microsoft.Extensions.Configuration;
 
 namespace Lykke.Service.OrderBooksCacheProvider
@@ -24,11 +25,9 @@ namespace Lykke.Service.OrderBooksCacheProvider
 
             var configuration = builder.Build();
 
-            var settings = SettingsReader.SettingsReader
-                .ReadGeneralSettings<ServiceSettings>(new Uri(configuration.GetConnectionString("Main")))
-                .OrderBooksCacheProvider;
+            var settings = configuration.LoadSettings<ServiceSettings>();
 
-            var container = new AzureBinder().Bind(settings).Build();
+            var container = new AzureBinder().Bind(settings.CurrentValue.OrderBooksCacheProvider).Build();
 
             StartAsync(container).Wait();
         }
@@ -37,7 +36,7 @@ namespace Lykke.Service.OrderBooksCacheProvider
         {
             var log = container.Resolve<ILog>();
 
-            await log.WriteInfoAsync("MeSocketClients", "Main", "", "Starting...");
+            await log.WriteInfoAsync("OrderBooksCacheProvider", "Main", "", "Starting...");
 
             await InitOrderBooks(container, log);
 
@@ -53,14 +52,14 @@ namespace Lykke.Service.OrderBooksCacheProvider
             }
             catch (Exception ex)
             {
-                await log.WriteErrorAsync("MeSocketClients", "Main", "", ex);
+                await log.WriteErrorAsync("OrderBooksCacheProvider", "Main", "", ex);
                 throw;
             }
         }
 
         private static async Task InitOrderBooks(IContainer container, ILog log)
         {
-            await log.WriteInfoAsync("MeSocketClients", "Main", "", "Init order books");
+            await log.WriteInfoAsync("OrderBooksCacheProvider", "InitOrderBooks", "", "Init order books");
 
             bool initilized = false;
             while (!initilized)
@@ -73,13 +72,13 @@ namespace Lykke.Service.OrderBooksCacheProvider
                 }
                 catch (Exception ex)
                 {
-                    await log.WriteErrorAsync("MeSocketClients", "Main", "Error on orderbook init. Retry in 5 seconds", ex);
+                    await log.WriteErrorAsync("OrderBooksCacheProvider", "InitOrderBooks", "Error on orderbook init. Retry in 5 seconds", ex);
                 }
 
                 await Task.Delay(5000);
             }
 
-            await log.WriteInfoAsync("MeSocketClients", "Main", "", "Init OK.");
+            await log.WriteInfoAsync("OrderBooksCacheProvider", "InitOrderBooks", "", "Init OK.");
         }
     }
 }

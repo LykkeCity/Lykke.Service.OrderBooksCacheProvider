@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Autofac;
+﻿using Autofac;
 using Autofac.Features.ResolveAnything;
 using AzureStorage.Tables;
 using Common;
@@ -35,15 +34,9 @@ namespace Lykke.Service.OrderBooksCacheProvider.Binders
             ioc.BindServices(settings);
             ioc.BindAzure(settings);
 
-            string ipAddress = settings.CacheSettings.RedisInternalHost;
-            if (!IPAddress.TryParse(ipAddress, out IPAddress tmp))
-            {
-                var addresses = Dns.GetHostAddressesAsync(ipAddress).Result;
-                ipAddress = addresses[0].ToString();
-            }
             var redis = new RedisCache(new RedisCacheOptions
             {
-                Configuration = $"{ipAddress}:{settings.CacheSettings.RedisPort}",
+                Configuration = settings.CacheSettings.RedisConfiguration,
                 InstanceName = settings.CacheSettings.FinanceDataCacheInstance
             });
 
