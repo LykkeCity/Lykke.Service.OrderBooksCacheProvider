@@ -69,7 +69,6 @@ namespace Services
 
         private void ClearExistingRecords()
         {
-			// todo: performance problem; potential out-of-memory exception
 	        var keys = _redisServer.Keys(pattern: _settings.CacheSettings.FinanceDataCacheInstance + "*").ToArray();
 	        _redisDatabase.KeyDelete(keys);
         }
