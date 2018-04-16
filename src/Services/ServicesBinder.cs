@@ -10,23 +10,17 @@ namespace Services
 {
     public static class ServicesBinder
     {
-        public static void BindServices(this ContainerBuilder ioc, OrderBooksCacheProviderSettings settings)
+        public static void BindServices(this ContainerBuilder builder, OrderBooksCacheProviderSettings settings)
         {
-            string ipAddress = settings.CacheSettings.RedisInternalHost;
-            if (!IPAddress.TryParse(ipAddress, out IPAddress tmp))
-            {
-                var addresses = Dns.GetHostAddressesAsync(ipAddress).Result;
-                ipAddress = addresses[0].ToString();
-            }
-            var redis = ConnectionMultiplexer.Connect(ipAddress);
+            var redis = ConnectionMultiplexer.Connect(settings.CacheSettings.RedisConfiguration);
 
-            ioc.RegisterInstance(redis).SingleInstance();
-            ioc.Register(
+            builder.RegisterInstance(redis).SingleInstance();
+            builder.Register(
                 c =>
                     c.Resolve<ConnectionMultiplexer>()
-                        .GetServer(ipAddress, settings.CacheSettings.RedisPort));
+                        .GetServer(redis.GetEndPoints()[0]));
 
-            ioc.Register(
+            builder.Register(
                 c =>
                     c.Resolve<ConnectionMultiplexer>()
                         .GetDatabase());
@@ -40,12 +34,12 @@ namespace Services
             };
 
 
-            ioc.Register(x => new RestClient()).As<IRestClient>();
-            ioc.RegisterType<OrderBookInitializer>().As<IOrderBookInitializer>();
+            builder.Register(x => new RestClient()).As<IRestClient>();
+            builder.RegisterType<OrderBookInitializer>().As<IOrderBookInitializer>();
 
-            ioc.RegisterInstance(rabbitSettings);
-            ioc.RegisterType<OrderBookReader>().As<IOrderBookReader>().SingleInstance();
-            ioc.RegisterType<OrderBooksHandler>().As<IOrderBooksHandler>().SingleInstance();
+            builder.RegisterInstance(rabbitSettings);
+            builder.RegisterType<OrderBookReader>().As<IOrderBookReader>().SingleInstance();
+            builder.RegisterType<OrderBooksHandler>().As<IOrderBooksHandler>().SingleInstance();
         }
     }
 }

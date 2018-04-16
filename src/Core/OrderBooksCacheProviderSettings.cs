@@ -13,9 +13,6 @@ namespace Core
         public string RedisConfiguration { get; set; }
 
         public string OrderBooksCacheKeyPattern { get; set; }
-
-        public int RedisPort { get; set; }
-        public string RedisInternalHost { get; set; }
     }
 
     public static class CacheSettingsExt
@@ -68,7 +65,7 @@ namespace Core
         public CacheSettings CacheSettings { get; set; }
     }
 
-    public class ServiceSettings
+    public class AppSettings
     {
         public OrderBooksCacheProviderSettings OrderBooksCacheProvider { get; set; }
     }

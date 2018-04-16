@@ -19,10 +19,10 @@ namespace Services
         {
             _cache = cache;
             _settings = settings;
-            _log = log;
+            _log = log.CreateComponentScope(nameof(OrderBooksHandler));
         }
 
-        public async Task HandleOrderBook(IOrderBook orderBook)
+        public async Task HandleOrderBook(OrderBook orderBook)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace Services
             }
             catch (Exception ex)
             {
-                throw new Exception($"{nameof(HandleOrderBook)} exception, orderbook: {orderBook.ToJson()}", ex);
+                _log.WriteError(nameof(HandleOrderBook), orderBook, ex);
             }
         }
     }

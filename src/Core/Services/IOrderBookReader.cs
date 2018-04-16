@@ -10,7 +10,7 @@ namespace Core.Services
 
     public interface IOrderBooksHandler
     {
-        Task HandleOrderBook(IOrderBook orderBook);
+        Task HandleOrderBook(OrderBook orderBook);
     }
     
     public interface IOrderBookReader

@@ -69,8 +69,8 @@ namespace Services
 
         private void ClearExistingRecords()
         {
-	        var keys = _redisServer.Keys(pattern: _settings.CacheSettings.FinanceDataCacheInstance + "*").ToArray();
-	        _redisDatabase.KeyDelete(keys);
+            var keys = _redisServer.Keys(pattern: _settings.CacheSettings.FinanceDataCacheInstance + "*").ToArray();
+            _redisDatabase.KeyDelete(keys);
         }
     }
 }

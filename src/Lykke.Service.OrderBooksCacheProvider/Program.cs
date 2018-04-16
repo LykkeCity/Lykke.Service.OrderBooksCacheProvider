@@ -25,9 +25,9 @@ namespace Lykke.Service.OrderBooksCacheProvider
 
             var configuration = builder.Build();
 
-            var settings = configuration.LoadSettings<ServiceSettings>();
+            var settings = configuration.LoadSettings<AppSettings>();
 
-            var container = new AzureBinder().Bind(settings.CurrentValue.OrderBooksCacheProvider).Build();
+            var container = new JobModule().Bind(settings).Build();
 
             StartAsync(container).Wait();
         }
