@@ -68,5 +68,19 @@ namespace Lykke.Job.OrderBooksCacheProvider.Core
     public class AppSettings
     {
         public OrderBooksCacheProviderSettings OrderBooksCacheProvider { get; set; }
+        public SlackNotificationsSettings SlackNotifications { get; set; }
     }
+
+    public class SlackNotificationsSettings
+    {
+        public AzureQueueSettings AzureQueue { get; set; }
+    }
+
+    public class AzureQueueSettings
+    {
+        public string ConnectionString { get; set; }
+
+        public string QueueName { get; set; }
+    }
+
 }
