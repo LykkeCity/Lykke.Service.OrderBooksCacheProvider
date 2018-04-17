@@ -12,10 +12,10 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
     public class OrderBooksHandler : IOrderBooksHandler
     {
         private readonly IDistributedCache _cache;
-        private readonly OrderBooksCacheProviderSettings _settings;
+        private readonly CacheSettings _settings;
         private readonly ILog _log;
 
-        public OrderBooksHandler(IDistributedCache cache, OrderBooksCacheProviderSettings settings, ILog log)
+        public OrderBooksHandler(IDistributedCache cache, CacheSettings settings, ILog log)
         {
             _cache = cache;
             _settings = settings;
@@ -26,11 +26,12 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
         {
             try
             {
-                await _cache.SetStringAsync(_settings.CacheSettings.GetOrderBookKey(orderBook.AssetPair, orderBook.IsBuy), orderBook.ToJson());
+                await _cache.SetStringAsync(_settings.GetOrderBookKey(orderBook.AssetPair, orderBook.IsBuy), orderBook.ToJson());
             }
             catch (Exception ex)
             {
-                _log.WriteError(nameof(HandleOrderBook), orderBook, ex);
+                _log.WriteWarning(nameof(HandleOrderBook), orderBook, "", ex);
+                throw;
             }
         }
     }

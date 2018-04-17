@@ -16,21 +16,24 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
     {
         private readonly IOrderBooksHandler _orderBooksHandler;
         private readonly IRestClient _restClient;
-        private readonly OrderBooksCacheProviderSettings _settings;
+        private readonly CacheSettings _cacheSettings;
         private readonly ILog _log;
-        private readonly IServer _redisServer;
-        private readonly IDatabase _redisDatabase;
+        private readonly ConnectionMultiplexer _redis;
 
-        public OrderBookInitializer(IOrderBooksHandler orderBooksHandler, IRestClient restClient,
-            OrderBooksCacheProviderSettings settings, ILog log, IServer redisServer, IDatabase redisDatabase)
+        public OrderBookInitializer(
+            IOrderBooksHandler orderBooksHandler, 
+            IRestClient restClient,
+            CacheSettings cacheSettings,
+            MatchingEngineSettings settings,
+            ILog log,
+            ConnectionMultiplexer redis)
         {
             _orderBooksHandler = orderBooksHandler;
             _restClient = restClient;
-            _settings = settings;
+            _cacheSettings = cacheSettings;
             _log = log;
-            _redisServer = redisServer;
-            _redisDatabase = redisDatabase;
-            _restClient.BaseUrl = settings.MatchingEngine.GetOrderBookInitUri();
+            _redis = redis;
+            _restClient.BaseUrl = settings.GetOrderBookInitUri();
         }
 
         public async Task InitOrderBooks()
@@ -69,8 +72,9 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
 
         private void ClearExistingRecords()
         {
-            var keys = _redisServer.Keys(pattern: _settings.CacheSettings.FinanceDataCacheInstance + "*").ToArray();
-            _redisDatabase.KeyDelete(keys);
+            var keys = _redis.GetServer(_redis.GetEndPoints()[0])
+                .Keys(pattern: _cacheSettings.FinanceDataCacheInstance + "*").ToArray();
+            _redis.GetDatabase().KeyDelete(keys);
         }
     }
 }

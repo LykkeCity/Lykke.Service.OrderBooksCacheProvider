@@ -9,7 +9,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Redis;
 using RestSharp;
 
-namespace Lykke.Job.OrderBooksCacheProvider.Binders
+namespace Lykke.Job.OrderBooksCacheProvider.Modules
 {
     public class JobModule : Module
     {
@@ -32,29 +32,36 @@ namespace Lykke.Job.OrderBooksCacheProvider.Binders
                 .As<IStartupManager>();
 
             builder.RegisterInstance(_log);
-            builder.RegisterInstance(_settings);
 
-            var redis = new RedisCache(new RedisCacheOptions
+            builder.Register(x => new RedisCache(new RedisCacheOptions
             {
                 Configuration = _settings.CacheSettings.RedisConfiguration,
                 InstanceName = _settings.CacheSettings.FinanceDataCacheInstance
-            });
-            builder.RegisterInstance(redis).As<IDistributedCache>();
+            })).As<IDistributedCache>();
 
             var exchangeName = _settings.MatchingEngine.RabbitMq.ExchangeOrderbook;
             var rabbitSettings = new RabbitMqSubscriptionSettings
             {
-                ConnectionString = _settings.MatchingEngine.RabbitMq.GetConnectionString(),
+                ConnectionString = _settings.MatchingEngine.RabbitMq.ConnectionString,
                 QueueName = $"{exchangeName}.OrderBooksCacheProvider",
                 ExchangeName = exchangeName
             };
 
             builder.Register(x => new RestClient()).As<IRestClient>();
-            builder.RegisterType<OrderBookInitializer>().As<IOrderBookInitializer>();
+            builder.RegisterType<OrderBookInitializer>()
+                .WithParameter(TypedParameter.From(_settings.MatchingEngine))
+                .WithParameter(TypedParameter.From(_settings.CacheSettings))
+                .As<IOrderBookInitializer>();
 
             builder.RegisterInstance(rabbitSettings);
-            builder.RegisterType<OrderBookReader>().As<IOrderBookReader>().SingleInstance();
-            builder.RegisterType<OrderBooksHandler>().As<IOrderBooksHandler>().SingleInstance();
+            builder.RegisterType<OrderBookReader>()
+                .As<IOrderBookReader>()
+                .SingleInstance();
+
+            builder.RegisterType<OrderBooksHandler>()
+                .WithParameter(TypedParameter.From(_settings.CacheSettings))
+                .As<IOrderBooksHandler>()
+                .SingleInstance();
         }
     }
 }

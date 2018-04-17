@@ -15,18 +15,7 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
 
         protected override void Load(ContainerBuilder builder)
         {
-            var redis = ConnectionMultiplexer.Connect(_settings.RedisConfiguration);
-
-            builder.RegisterInstance(redis).SingleInstance();
-            builder.Register(
-                c =>
-                    c.Resolve<ConnectionMultiplexer>()
-                        .GetServer(redis.GetEndPoints()[0]));
-
-            builder.Register(
-                c =>
-                    c.Resolve<ConnectionMultiplexer>()
-                        .GetDatabase());
+            builder.Register(x => ConnectionMultiplexer.Connect(_settings.RedisConfiguration)).SingleInstance();
         }
     }
 }
