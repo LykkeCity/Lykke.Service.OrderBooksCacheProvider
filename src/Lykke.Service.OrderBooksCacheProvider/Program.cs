@@ -1,84 +1,58 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using Autofac;
-using Common.Log;
-using Core;
-using Core.Services;
-using Lykke.Service.OrderBooksCacheProvider.Binders;
-using Lykke.SettingsReader;
-using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.PlatformAbstractions;
 
 namespace Lykke.Service.OrderBooksCacheProvider
 {
-    public class Program
+    internal sealed class Program
     {
-        static void Main(string[] args)
+        public static string EnvInfo => Environment.GetEnvironmentVariable("ENV_INFO");
+
+        public static void Main(string[] args)
         {
-            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            Console.WriteLine($"{PlatformServices.Default.Application.ApplicationName} version {PlatformServices.Default.Application.ApplicationVersion}");
+#if DEBUG
+            Console.WriteLine("Is DEBUG");
+#else
+            Console.WriteLine("Is RELEASE");
+#endif
+            Console.WriteLine($"ENV_INFO: {EnvInfo}");
 
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: true)
-                .AddEnvironmentVariables();
-
-            var configuration = builder.Build();
-
-            var settings = configuration.LoadSettings<AppSettings>();
-
-            var container = new JobModule().Bind(settings).Build();
-
-            StartAsync(container).Wait();
-        }
-
-        static async Task StartAsync(IContainer container)
-        {
-            var log = container.Resolve<ILog>();
-
-            await log.WriteInfoAsync("OrderBooksCacheProvider", "Main", "", "Starting...");
-
-            await InitOrderBooks(container, log);
-
-            await StartReadOrderBooks(container, log);
-        }
-
-        private static async Task StartReadOrderBooks(IContainer container, ILog log)
-        {
             try
             {
-                var orderBookReader = container.Resolve<IOrderBookReader>();
-                orderBookReader.StartRead();
+                var host = new WebHostBuilder()
+                    .UseKestrel()
+                    .UseUrls("http://*:5000")
+                    .UseContentRoot(Directory.GetCurrentDirectory())
+                    .UseStartup<Startup>()
+                    .UseApplicationInsights()
+                    .Build();
+
+                host.Run();
             }
             catch (Exception ex)
             {
-                await log.WriteErrorAsync("OrderBooksCacheProvider", "Main", "", ex);
-                throw;
-            }
-        }
+                Console.WriteLine("Fatal error:");
+                Console.WriteLine(ex);
 
-        private static async Task InitOrderBooks(IContainer container, ILog log)
-        {
-            await log.WriteInfoAsync("OrderBooksCacheProvider", "InitOrderBooks", "", "Init order books");
+                // Lets devops to see startup error in console between restarts in the Kubernetes
+                var delay = TimeSpan.FromMinutes(1);
 
-            bool initilized = false;
-            while (!initilized)
-            {
-                try
-                {
-                    var orderBookInitializer = container.Resolve<IOrderBookInitializer>();
-                    await orderBookInitializer.InitOrderBooks();
-                    initilized = true;
-                }
-                catch (Exception ex)
-                {
-                    await log.WriteErrorAsync("OrderBooksCacheProvider", "InitOrderBooks", "Error on orderbook init. Retry in 5 seconds", ex);
-                }
+                Console.WriteLine();
+                Console.WriteLine($"Process will be terminated in {delay}. Press any key to terminate immediately.");
 
-                await Task.Delay(5000);
+                Task.WhenAny(
+                        Task.Delay(delay),
+                        Task.Run(() =>
+                        {
+                            Console.ReadKey(true);
+                        }))
+                    .Wait();
             }
 
-            await log.WriteInfoAsync("OrderBooksCacheProvider", "InitOrderBooks", "", "Init OK.");
+            Console.WriteLine("Terminated");
         }
     }
 }

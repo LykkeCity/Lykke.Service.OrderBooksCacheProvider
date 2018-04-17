@@ -2,15 +2,15 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Common.Log;
-using Core;
-using Core.Services;
-using RestSharp;
 using Common;
-using Core.Domain;
+using Common.Log;
+using Lykke.Job.OrderBooksCacheProvider.Core;
+using Lykke.Job.OrderBooksCacheProvider.Core.Domain;
+using Lykke.Job.OrderBooksCacheProvider.Core.Services;
+using RestSharp;
 using StackExchange.Redis;
 
-namespace Services
+namespace Lykke.Job.OrderBooksCacheProvider.Services
 {
     public class OrderBookInitializer : IOrderBookInitializer
     {

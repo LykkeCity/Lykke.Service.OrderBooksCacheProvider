@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Core.Domain
+namespace Lykke.Job.OrderBooksCacheProvider.Core.Domain
 {
     public class OrderBook
     {

@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>Core</AssemblyName>
+    <AssemblyName>Lykke.Job.OrderBooksCacheProvider.Core</AssemblyName>
     <PackageId>Core</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <Version>1.0.0</Version>
+    <RootNamespace>Lykke.Job.OrderBooksCacheProvider.Core</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

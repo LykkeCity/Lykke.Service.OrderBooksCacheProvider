@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core
+namespace Lykke.Job.OrderBooksCacheProvider.Core
 {
     public class DbSettings
     {

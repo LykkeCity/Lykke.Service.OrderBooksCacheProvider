@@ -2,17 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>Services</AssemblyName>
+    <AssemblyName>Lykke.Job.OrderBooksCacheProvider.Services</AssemblyName>
     <PackageId>Services</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <Version>1.0.0</Version>
+    <RootNamespace>Lykke.Job.OrderBooksCacheProvider.Services</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Lykke.RabbitMqBroker" Version="7.0.0" />
@@ -25,6 +22,10 @@
     <PackageReference Include="RestSharp.NetCore" Version="105.2.4-rc4-24214-01" />
     <PackageReference Include="StackExchange.Redis" Version="1.2.6" />
     <PackageReference Include="System.Reflection" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Lykke.Job.OrderBooksCacheProvider.Core.csproj" />
   </ItemGroup>
 
 </Project>

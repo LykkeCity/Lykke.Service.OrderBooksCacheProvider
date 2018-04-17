@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Core.Domain;
+using Lykke.Job.OrderBooksCacheProvider.Core.Domain;
 
-namespace Core.Services
+namespace Lykke.Job.OrderBooksCacheProvider.Core.Services
 {
     public interface IOrderBookInitializer
     {

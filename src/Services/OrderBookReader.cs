@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Common.Log;
-using Core.Domain;
-using Core.Services;
+using Lykke.Job.OrderBooksCacheProvider.Core.Domain;
+using Lykke.Job.OrderBooksCacheProvider.Core.Services;
 using Lykke.RabbitMqBroker;
 using Lykke.RabbitMqBroker.Subscriber;
 
-namespace Services
+namespace Lykke.Job.OrderBooksCacheProvider.Services
 {
     public class OrderBookReader : IOrderBookReader
     {
