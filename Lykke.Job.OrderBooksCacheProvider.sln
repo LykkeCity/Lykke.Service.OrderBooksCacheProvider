@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastucture", "Infrastucture", "{734D6328-7BAF-4467-A848-D8C6F419A8EB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Service.OrderBooksCacheProvider", "src\Lykke.Service.OrderBooksCacheProvider\Lykke.Service.OrderBooksCacheProvider.csproj", "{203425DB-4EDF-4B04-ABE4-FEE890BBC8AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Job.OrderBooksCacheProvider", "src\Lykke.Job.OrderBooksCacheProvider\Lykke.Job.OrderBooksCacheProvider.csproj", "{203425DB-4EDF-4B04-ABE4-FEE890BBC8AF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Job.OrderBooksCacheProvider.Core", "src\Core\Lykke.Job.OrderBooksCacheProvider.Core.csproj", "{EB19EAC0-F7A1-458D-908B-AE39D1B0CDDF}"
 EndProject

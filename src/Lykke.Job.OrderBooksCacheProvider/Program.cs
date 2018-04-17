@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.PlatformAbstractions;
 
-namespace Lykke.Service.OrderBooksCacheProvider
+namespace Lykke.Job.OrderBooksCacheProvider
 {
     internal sealed class Program
     {

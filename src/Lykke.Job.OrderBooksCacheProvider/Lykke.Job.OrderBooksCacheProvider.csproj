@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <AssemblyName>Lykke.Service.OrderBooksCacheProvider</AssemblyName>
+    <AssemblyName>Lykke.Job.OrderBooksCacheProvider</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>Lykke.Brokers.MeSocketClients</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>

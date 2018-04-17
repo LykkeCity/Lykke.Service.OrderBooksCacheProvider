@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Net;
-using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using Lykke.Common.Api.Contract.Responses;
 using Lykke.Job.OrderBooksCacheProvider.Core.Services;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Lykke.Service.OrderBooksCacheProvider.Controllers
+namespace Lykke.Job.OrderBooksCacheProvider.Controllers
 {
     // NOTE: See https://lykkex.atlassian.net/wiki/spaces/LKEWALLET/pages/35755585/Add+your+app+to+Monitoring
     [Route("api/[controller]")]

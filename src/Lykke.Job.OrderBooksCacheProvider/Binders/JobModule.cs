@@ -9,7 +9,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Redis;
 using RestSharp;
 
-namespace Lykke.Service.OrderBooksCacheProvider.Binders
+namespace Lykke.Job.OrderBooksCacheProvider.Binders
 {
     public class JobModule : Module
     {
@@ -33,14 +33,14 @@ namespace Lykke.Service.OrderBooksCacheProvider.Binders
 
             builder.RegisterInstance(_log);
             builder.RegisterInstance(_settings);
-            
+
             var redis = new RedisCache(new RedisCacheOptions
             {
                 Configuration = _settings.CacheSettings.RedisConfiguration,
                 InstanceName = _settings.CacheSettings.FinanceDataCacheInstance
             });
             builder.RegisterInstance(redis).As<IDistributedCache>();
-            
+
             var exchangeName = _settings.MatchingEngine.RabbitMq.ExchangeOrderbook;
             var rabbitSettings = new RabbitMqSubscriptionSettings
             {

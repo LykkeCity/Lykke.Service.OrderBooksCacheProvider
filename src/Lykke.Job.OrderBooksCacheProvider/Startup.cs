@@ -4,21 +4,21 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AzureStorage.Tables;
 using Common.Log;
+using Lykke.Common.Api.Contract.Responses;
 using Lykke.Common.ApiLibrary.Middleware;
 using Lykke.Common.ApiLibrary.Swagger;
-using Lykke.Common.Api.Contract.Responses;
+using Lykke.Job.OrderBooksCacheProvider.Binders;
 using Lykke.Job.OrderBooksCacheProvider.Core;
 using Lykke.Job.OrderBooksCacheProvider.Core.Services;
 using Lykke.Job.OrderBooksCacheProvider.Services;
 using Lykke.Logs;
-using Lykke.Service.OrderBooksCacheProvider.Binders;
 using Lykke.SettingsReader;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Lykke.Service.OrderBooksCacheProvider
+namespace Lykke.Job.OrderBooksCacheProvider
 {
     public class Startup
     {
