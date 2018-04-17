@@ -9,13 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastucture", "Infrastucture", "{734D6328-7BAF-4467-A848-D8C6F419A8EB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Service.OrderBooksCacheProvider", "src\Lykke.Service.OrderBooksCacheProvider\Lykke.Service.OrderBooksCacheProvider.csproj", "{203425DB-4EDF-4B04-ABE4-FEE890BBC8AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Job.OrderBooksCacheProvider", "src\Lykke.Job.OrderBooksCacheProvider\Lykke.Job.OrderBooksCacheProvider.csproj", "{203425DB-4EDF-4B04-ABE4-FEE890BBC8AF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "src\Core\Core.csproj", "{EB19EAC0-F7A1-458D-908B-AE39D1B0CDDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Job.OrderBooksCacheProvider.Core", "src\Core\Lykke.Job.OrderBooksCacheProvider.Core.csproj", "{EB19EAC0-F7A1-458D-908B-AE39D1B0CDDF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "src\Repositories\Repositories.csproj", "{5B2FD1F4-E3B3-4CFE-A0C0-844F82747443}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "src\Services\Services.csproj", "{2F501A10-99F9-4523-AB36-479FDFC91DDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Job.OrderBooksCacheProvider.Services", "src\Services\Lykke.Job.OrderBooksCacheProvider.Services.csproj", "{2F501A10-99F9-4523-AB36-479FDFC91DDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +29,6 @@ Global
 		{EB19EAC0-F7A1-458D-908B-AE39D1B0CDDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB19EAC0-F7A1-458D-908B-AE39D1B0CDDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB19EAC0-F7A1-458D-908B-AE39D1B0CDDF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5B2FD1F4-E3B3-4CFE-A0C0-844F82747443}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B2FD1F4-E3B3-4CFE-A0C0-844F82747443}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B2FD1F4-E3B3-4CFE-A0C0-844F82747443}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B2FD1F4-E3B3-4CFE-A0C0-844F82747443}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2F501A10-99F9-4523-AB36-479FDFC91DDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2F501A10-99F9-4523-AB36-479FDFC91DDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F501A10-99F9-4523-AB36-479FDFC91DDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -47,7 +41,9 @@ Global
 		{734D6328-7BAF-4467-A848-D8C6F419A8EB} = {C495CC04-267B-4AB2-B942-AE0969784731}
 		{203425DB-4EDF-4B04-ABE4-FEE890BBC8AF} = {C495CC04-267B-4AB2-B942-AE0969784731}
 		{EB19EAC0-F7A1-458D-908B-AE39D1B0CDDF} = {734D6328-7BAF-4467-A848-D8C6F419A8EB}
-		{5B2FD1F4-E3B3-4CFE-A0C0-844F82747443} = {734D6328-7BAF-4467-A848-D8C6F419A8EB}
 		{2F501A10-99F9-4523-AB36-479FDFC91DDB} = {734D6328-7BAF-4467-A848-D8C6F419A8EB}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5BF2D763-90FD-4FD4-9A7B-1BEAAF2EA893}
 	EndGlobalSection
 EndGlobal

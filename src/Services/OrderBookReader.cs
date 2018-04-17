@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Common.Log;
-using Core.Domain;
-using Core.Services;
+using Lykke.Job.OrderBooksCacheProvider.Core.Domain;
+using Lykke.Job.OrderBooksCacheProvider.Core.Services;
 using Lykke.RabbitMqBroker;
 using Lykke.RabbitMqBroker.Subscriber;
-using Services.Tools;
 
-namespace Services
+namespace Lykke.Job.OrderBooksCacheProvider.Services
 {
     public class OrderBookReader : IOrderBookReader
     {
         private readonly IOrderBooksHandler _orderBooksHandler;
-        private readonly RabbitMqSubscriber<OrderBook> _connector;
+        private readonly RabbitMqSubscriber<OrderBook> _subscriber;
 
         public OrderBookReader(RabbitMqSubscriptionSettings settings,
             IOrderBooksHandler orderBooksHandler,
@@ -20,11 +19,11 @@ namespace Services
         {
             _orderBooksHandler = orderBooksHandler;
 
-            _connector =
+            _subscriber =
                 new RabbitMqSubscriber<OrderBook>(settings,
                         new ResilientErrorHandlingStrategy(log, settings, TimeSpan.FromSeconds(10),
                             next: new DefaultErrorHandlingStrategy(log, settings)))
-                    .SetMessageDeserializer(new OrderBookDeserializer())
+                    .SetMessageDeserializer(new JsonMessageDeserializer<OrderBook>())
                     .SetMessageReadStrategy(new MessageReadWithTemporaryQueueStrategy())
                     .Subscribe(HandleData)
                     .SetLogger(log);
@@ -32,15 +31,12 @@ namespace Services
 
         public void StartRead()
         {
-            _connector.Start();
+            _subscriber.Start();
         }
 
-        private async Task HandleData(IOrderBook orderBook)
+        private async Task HandleData(OrderBook orderBook)
         {
-            if (orderBook != null)
-            {
-                await _orderBooksHandler.HandleOrderBook(orderBook);
-            }
+            await _orderBooksHandler.HandleOrderBook(orderBook);
         }
     }
 }

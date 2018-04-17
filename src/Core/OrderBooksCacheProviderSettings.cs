@@ -1,9 +1,11 @@
 ﻿using System;
+using Lykke.SettingsReader.Attributes;
 
-namespace Core
+namespace Lykke.Job.OrderBooksCacheProvider.Core
 {
     public class DbSettings
     {
+        [AzureTableCheck]
         public string LogsConnString { get; set; }
     }
 
@@ -13,9 +15,6 @@ namespace Core
         public string RedisConfiguration { get; set; }
 
         public string OrderBooksCacheKeyPattern { get; set; }
-
-        public int RedisPort { get; set; }
-        public string RedisInternalHost { get; set; }
     }
 
     public static class CacheSettingsExt
@@ -26,7 +25,7 @@ namespace Core
         }
     }
 
-    public class MatchingOrdersSettings
+    public class MatchingEngineSettings
     {
         public IpEndpointSettings IpEndpoint { get; set; }
         public RabbitMqSettings RabbitMq { get; set; }
@@ -35,22 +34,14 @@ namespace Core
 
     public class RabbitMqSettings
     {
-        public string Host { get; set; }
-        public string ExternalHost { get; set; }
+        [AmqpCheck]
+        public string ConnectionString { get; set; }
         public string ExchangeOrderbook { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string Port { get; set; }
     }
 
     public static class Ext
     {
-        public static string GetConnectionString (this RabbitMqSettings settings)
-        {
-            return $"amqp://{settings.Username}:{settings.Password}@{settings.Host}:{settings.Port}";
-        }
-
-        public static Uri GetOrderBookInitUri(this MatchingOrdersSettings settings)
+        public static Uri GetOrderBookInitUri(this MatchingEngineSettings settings)
         {
             return new Uri($"http://{settings.IpEndpoint.InternalHost}:{settings.HttpOrderBookPort}/orderBooks");
         }
@@ -64,12 +55,26 @@ namespace Core
     public class OrderBooksCacheProviderSettings
     {
         public DbSettings Db { get; set; }
-        public MatchingOrdersSettings MatchingEngine { get; set; }
+        public MatchingEngineSettings MatchingEngine { get; set; }
         public CacheSettings CacheSettings { get; set; }
     }
 
-    public class ServiceSettings
+    public class AppSettings
     {
         public OrderBooksCacheProviderSettings OrderBooksCacheProvider { get; set; }
+        public SlackNotificationsSettings SlackNotifications { get; set; }
     }
+
+    public class SlackNotificationsSettings
+    {
+        public AzureQueueSettings AzureQueue { get; set; }
+    }
+
+    public class AzureQueueSettings
+    {
+        public string ConnectionString { get; set; }
+
+        public string QueueName { get; set; }
+    }
+
 }

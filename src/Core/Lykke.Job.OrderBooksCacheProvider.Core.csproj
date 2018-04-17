@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>Lykke.Job.OrderBooksCacheProvider.Core</AssemblyName>
+    <Version>1.0.0</Version>
+    <RootNamespace>Lykke.Job.OrderBooksCacheProvider.Core</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Lykke.Common" Version="6.3.0" />
+    <PackageReference Include="Lykke.SettingsReader" Version="2.1.0" />
+  </ItemGroup>
+
+</Project>
