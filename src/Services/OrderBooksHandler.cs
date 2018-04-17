@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Common;
 using Common.Log;
@@ -16,10 +15,6 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
         private readonly OrderBooksCacheProviderSettings _settings;
         private readonly ILog _log;
 
-        internal static ulong OrderbookCounter;
-        internal static TimeSpan RedisWaitTime = TimeSpan.Zero;
-        private static readonly Stopwatch _stopwatch = new Stopwatch();
-
         public OrderBooksHandler(IDistributedCache cache, OrderBooksCacheProviderSettings settings, ILog log)
         {
             _cache = cache;
@@ -29,7 +24,6 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
 
         public async Task HandleOrderBook(OrderBook orderBook)
         {
-            _stopwatch.Restart();
             try
             {
                 await _cache.SetStringAsync(_settings.CacheSettings.GetOrderBookKey(orderBook.AssetPair, orderBook.IsBuy), orderBook.ToJson());
@@ -38,8 +32,6 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
             {
                 _log.WriteError(nameof(HandleOrderBook), orderBook, ex);
             }
-            OrderbookCounter++;
-            RedisWaitTime += _stopwatch.Elapsed;
         }
     }
 }

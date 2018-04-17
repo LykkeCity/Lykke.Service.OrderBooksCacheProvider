@@ -14,11 +14,7 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
 
         public IEnumerable<HealthIssue> GetHealthIssues()
         {
-            var issues = new HealthIssuesCollection
-            {
-                {"OrderbookCounter", OrderBooksHandler.OrderbookCounter.ToString()},
-                {"RedisWaitTime", OrderBooksHandler.RedisWaitTime.ToString()}
-            };
+            var issues = new HealthIssuesCollection();
             
             return issues;
         }
