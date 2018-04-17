@@ -61,11 +61,10 @@ namespace Lykke.Job.OrderBooksCacheProvider
                 var appSettings = Configuration.LoadSettings<AppSettings>();
 
                 Log = CreateLogWithSlack(services, appSettings);
+                builder.Populate(services);
 
                 builder.RegisterModule(new JobModule(appSettings, Log));
                 builder.RegisterModule(new RedisModule(appSettings.CurrentValue.OrderBooksCacheProvider.CacheSettings));
-
-                builder.Populate(services);
 
                 ApplicationContainer = builder.Build();
 
