@@ -3,16 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>Lykke.Job.OrderBooksCacheProvider.Core</AssemblyName>
-    <PackageId>Core</PackageId>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <Version>1.0.0</Version>
     <RootNamespace>Lykke.Job.OrderBooksCacheProvider.Core</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Lykke.Common" Version="6.0.0" />
+    <PackageReference Include="Lykke.Common" Version="6.3.0" />
   </ItemGroup>
 
 </Project>
