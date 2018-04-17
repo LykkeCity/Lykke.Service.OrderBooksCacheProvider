@@ -9,7 +9,7 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
     // but the only way. If this is your case, use this class to manage startup.
     // For example, sometimes some state should be restored before any periodical handler will be started, 
     // or any incoming message will be processed and so on.
-    // Do not forget to remove As<IStartable>() and AutoActivate() from DI registartions of services, 
+    // Do not forget to remove As<IStartable>() and AutoActivate() from DI registrations of services, 
     // which you want to startup explicitly.
 
     public class StartupManager : IStartupManager
@@ -20,7 +20,7 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
 
         public StartupManager(ILog log, IOrderBookInitializer orderBookInitializer, IOrderBookReader orderBookReader)
         {
-            _log = log;
+            _log = log.CreateComponentScope(nameof(StartupManager));
             _orderBookInitializer = orderBookInitializer;
             _orderBookReader = orderBookReader;
         }
@@ -33,7 +33,7 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
 
         private async Task InitOrderBooks()
         {
-            await _log.WriteInfoAsync("OrderBooksCacheProvider", "InitOrderBooks", "", "Init order books");
+            _log.WriteInfo("InitOrderBooks", null, "Initialization order books");
 
             bool initilized = false;
             while (!initilized)
@@ -45,13 +45,13 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
                 }
                 catch (Exception ex)
                 {
-                    await _log.WriteErrorAsync("OrderBooksCacheProvider", "InitOrderBooks", "Error on orderbook init. Retry in 5 seconds", ex);
+                    _log.WriteError("InitOrderBooks", "Error on orderbook init. Retry in 5 seconds", ex);
                 }
 
                 await Task.Delay(5000);
             }
 
-            await _log.WriteInfoAsync("OrderBooksCacheProvider", "InitOrderBooks", "", "Init OK.");
+            _log.WriteInfo("InitOrderBooks", null, "Init OK.");
         }
 
         private async Task StartReadOrderBooks()
@@ -62,7 +62,7 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
             }
             catch (Exception ex)
             {
-                await _log.WriteErrorAsync("OrderBooksCacheProvider", "Main", "", ex);
+                _log.WriteError("StartRead", null, ex);
                 throw;
             }
         }
