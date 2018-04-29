@@ -36,10 +36,8 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
             _restClient.BaseUrl = settings.GetOrderBookInitUri();
         }
 
-        public async Task InitOrderBooks()
+        public async Task InitOrderBooks(bool clearExistingRecords = true)
         {
-            ClearExistingRecords();
-
             var request = new RestRequest(Method.GET);
 
             var t = new TaskCompletionSource<IRestResponse>();
@@ -48,6 +46,11 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
 
             if (response.ResponseStatus == ResponseStatus.Completed && response.StatusCode == HttpStatusCode.OK)
             {
+                if (clearExistingRecords)
+                {
+                    ClearExistingRecords();
+                }
+
                 var orderBooks = response.Content.DeserializeJson<OrderBook[]>();
                 if (orderBooks != null && orderBooks.Any())
                 {

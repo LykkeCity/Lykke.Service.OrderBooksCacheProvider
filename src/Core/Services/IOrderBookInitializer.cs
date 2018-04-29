@@ -4,6 +4,6 @@ namespace Lykke.Job.OrderBooksCacheProvider.Core.Services
 {
     public interface IOrderBookInitializer
     {
-        Task InitOrderBooks();
+        Task InitOrderBooks(bool clearExistingRecords = true);
     }
 }

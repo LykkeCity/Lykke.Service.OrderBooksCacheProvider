@@ -13,6 +13,8 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
         private readonly IOrderBooksHandler _orderBooksHandler;
         private readonly RabbitMqSubscriber<OrderBook> _subscriber;
 
+        public DateTime LastReceivedTimeStamp { get; private set; }
+
         public OrderBookReader(RabbitMqSubscriptionSettings settings,
             IOrderBooksHandler orderBooksHandler,
             ILog log)
@@ -36,6 +38,8 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
 
         private async Task HandleData(OrderBook orderBook)
         {
+            LastReceivedTimeStamp = DateTime.UtcNow;
+
             await _orderBooksHandler.HandleOrderBook(orderBook);
         }
     }
