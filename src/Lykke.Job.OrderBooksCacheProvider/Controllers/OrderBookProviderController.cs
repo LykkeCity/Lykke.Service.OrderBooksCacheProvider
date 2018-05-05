@@ -30,17 +30,17 @@ namespace Lykke.Job.OrderBooksCacheProvider.Controllers
         [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetOrderBook(string assetPair)
         {
-            if (string.IsNullOrEmpty(assetPair))
-            {
-                return BadRequest(new ErrorResponse
-                {
-                    ErrorMessage = "assetPair cannot be empty"
-                });
-            }
-
             try
             {
-                return Ok(await _booksProvider.GetCurrentOrderBooksAsync(assetPair));
+                var orderBook = await _booksProvider.GetCurrentOrderBooksAsync(assetPair);
+                if (orderBook == null)
+                {
+                    return BadRequest(new ErrorResponse
+                    {
+                        ErrorMessage = "order book for assetPair not found"
+                    });
+                }
+                return Ok(orderBook);
             }
             catch (Exception ex)
             {
