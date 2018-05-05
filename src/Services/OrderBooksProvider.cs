@@ -37,7 +37,7 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
                 }
                 var result = new List<OrderBook>();
                 result.Add(JsonConvert.DeserializeObject<OrderBook>(buyTask.Result));
-                result.Add(JsonConvert.DeserializeObject<OrderBook>(buyTask.Result));
+                result.Add(JsonConvert.DeserializeObject<OrderBook>(sellTask.Result));
 
                 return result;
             }
