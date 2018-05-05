@@ -55,9 +55,13 @@ namespace Lykke.Job.OrderBooksCacheProvider.Client
                 result.Prices.AddRange(raw[0].Prices);
             }
             
-            if (raw.Count >= 2 && result.Timestamp < raw[1].Timestamp)
+            if (raw.Count >= 2)
             {
-                result.Timestamp = raw[1].Timestamp;
+                if (result.Timestamp < raw[1].Timestamp)
+                {
+                    result.Timestamp = raw[1].Timestamp;
+                }
+                
                 result.Prices.AddRange(raw[1].Prices);
             }
 
