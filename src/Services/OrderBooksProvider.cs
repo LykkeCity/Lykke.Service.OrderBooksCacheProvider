@@ -31,16 +31,13 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
                 var sellTask = _cache.GetStringAsync(_settings.GetOrderBookKey(assetPair, false));
                 await Task.WhenAll(buyTask, sellTask);
 
+                if (string.IsNullOrEmpty(buyTask.Result) || string.IsNullOrEmpty(sellTask.Result))
+                {
+                    return null;
+                }
                 var result = new List<OrderBook>();
-                if (!string.IsNullOrEmpty(buyTask.Result))
-                {
-                    result.Add(JsonConvert.DeserializeObject<OrderBook>(buyTask.Result));
-                }
-
-                if (!string.IsNullOrEmpty(sellTask.Result))
-                {
-                    result.Add(JsonConvert.DeserializeObject<OrderBook>(sellTask.Result));
-                }
+                result.Add(JsonConvert.DeserializeObject<OrderBook>(buyTask.Result));
+                result.Add(JsonConvert.DeserializeObject<OrderBook>(buyTask.Result));
 
                 return result;
             }
