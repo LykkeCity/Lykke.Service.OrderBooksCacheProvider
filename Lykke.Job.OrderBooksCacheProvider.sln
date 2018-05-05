@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C495CC04-267B-4AB2-B942-AE0969784731}"
 EndProject
@@ -14,6 +14,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Job.OrderBooksCacheProvider.Core", "src\Core\Lykke.Job.OrderBooksCacheProvider.Core.csproj", "{EB19EAC0-F7A1-458D-908B-AE39D1B0CDDF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lykke.Job.OrderBooksCacheProvider.Services", "src\Services\Lykke.Job.OrderBooksCacheProvider.Services.csproj", "{2F501A10-99F9-4523-AB36-479FDFC91DDB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "client", "client", "{09E1916D-1A1E-446E-AAEA-03417B609399}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lykke.Job.OrderBooksCacheProvider.Client", "Lykke.Job.OrderBooksCacheProvider.Client\Lykke.Job.OrderBooksCacheProvider.Client.csproj", "{BBDEE539-6F20-4870-A875-7CB903E8CA46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,10 @@ Global
 		{2F501A10-99F9-4523-AB36-479FDFC91DDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F501A10-99F9-4523-AB36-479FDFC91DDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F501A10-99F9-4523-AB36-479FDFC91DDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBDEE539-6F20-4870-A875-7CB903E8CA46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBDEE539-6F20-4870-A875-7CB903E8CA46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBDEE539-6F20-4870-A875-7CB903E8CA46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBDEE539-6F20-4870-A875-7CB903E8CA46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,6 +50,7 @@ Global
 		{203425DB-4EDF-4B04-ABE4-FEE890BBC8AF} = {C495CC04-267B-4AB2-B942-AE0969784731}
 		{EB19EAC0-F7A1-458D-908B-AE39D1B0CDDF} = {734D6328-7BAF-4467-A848-D8C6F419A8EB}
 		{2F501A10-99F9-4523-AB36-479FDFC91DDB} = {734D6328-7BAF-4467-A848-D8C6F419A8EB}
+		{BBDEE539-6F20-4870-A875-7CB903E8CA46} = {09E1916D-1A1E-446E-AAEA-03417B609399}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BF2D763-90FD-4FD4-9A7B-1BEAAF2EA893}
