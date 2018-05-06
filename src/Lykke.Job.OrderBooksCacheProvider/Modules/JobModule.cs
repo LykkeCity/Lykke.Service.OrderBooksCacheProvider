@@ -62,6 +62,12 @@ namespace Lykke.Job.OrderBooksCacheProvider.Modules
                 .WithParameter(TypedParameter.From(_settings.CacheSettings))
                 .As<IOrderBooksHandler>()
                 .SingleInstance();
+
+            builder.RegisterType<OrderBooksProvider>()
+                .WithParameter(TypedParameter.From(_settings.CacheSettings))
+                .As<IOrderBooksProvider>()
+                .SingleInstance();
+            
         }
     }
 }
