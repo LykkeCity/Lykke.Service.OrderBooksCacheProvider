@@ -7,7 +7,7 @@ using Lykke.Job.OrderBooksCacheProvider.Core.Services;
 
 namespace Lykke.Job.OrderBooksCacheProvider.PeriodicalHandlers
 {
-    public class OrderbookFlowChecker : TimerPeriod
+    internal class OrderbookFlowChecker : TimerPeriod
     {
         private readonly IOrderBookInitializer _orderBookInitializer;
         private readonly IOrderBookReader _orderBookReader;
