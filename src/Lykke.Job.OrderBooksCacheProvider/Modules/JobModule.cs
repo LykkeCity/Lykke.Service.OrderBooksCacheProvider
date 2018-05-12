@@ -1,7 +1,9 @@
-﻿using Autofac;
+﻿using System;
+using Autofac;
 using Common.Log;
 using Lykke.Job.OrderBooksCacheProvider.Core;
 using Lykke.Job.OrderBooksCacheProvider.Core.Services;
+using Lykke.Job.OrderBooksCacheProvider.PeriodicalHandlers;
 using Lykke.Job.OrderBooksCacheProvider.Services;
 using Lykke.RabbitMqBroker.Subscriber;
 using Lykke.SettingsReader;
@@ -67,7 +69,17 @@ namespace Lykke.Job.OrderBooksCacheProvider.Modules
                 .WithParameter(TypedParameter.From(_settings.CacheSettings))
                 .As<IOrderBooksProvider>()
                 .SingleInstance();
-            
+
+            RegisterPeriodicalHandlers(builder);
+        }
+
+        private void RegisterPeriodicalHandlers(ContainerBuilder builder)
+        {
+            builder.RegisterType<OrderbookFlowChecker>()
+                .WithParameter(TypedParameter.From(TimeSpan.FromMinutes(1)))
+                .As<IStartable>()
+                .AutoActivate()
+                .SingleInstance();
         }
     }
 }
