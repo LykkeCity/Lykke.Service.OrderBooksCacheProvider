@@ -80,6 +80,12 @@ namespace Lykke.Job.OrderBooksCacheProvider.Modules
                 .As<IStartable>()
                 .AutoActivate()
                 .SingleInstance();
+
+            builder.RegisterType<ForcedOrderbookUpdated>()
+                .WithParameter(TypedParameter.From(_settings.CacheSettings.ForceUpdateInterval))
+                .As<IStartable>()
+                .AutoActivate()
+                .SingleInstance();
         }
     }
 }
