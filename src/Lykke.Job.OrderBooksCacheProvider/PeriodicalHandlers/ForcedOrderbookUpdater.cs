@@ -7,17 +7,17 @@ using Lykke.Job.OrderBooksCacheProvider.Core.Services;
 
 namespace Lykke.Job.OrderBooksCacheProvider.PeriodicalHandlers
 {
-    internal class ForcedOrderbookUpdated : TimerPeriod
+    internal class ForcedOrderbookUpdater : TimerPeriod
     {
         private static bool _isFirstRun = true;
 
         private readonly IOrderBookInitializer _orderBookInitializer;
 
-        public ForcedOrderbookUpdated(
+        public ForcedOrderbookUpdater(
             [NotNull] IOrderBookInitializer orderBookInitializer,
             TimeSpan checkInterval,
             ILog log = null)
-            : base(nameof(ForcedOrderbookUpdated), (int)checkInterval.TotalMilliseconds, log)
+            : base(nameof(ForcedOrderbookUpdater), (int)checkInterval.TotalMilliseconds, log)
         {
             _orderBookInitializer = orderBookInitializer ?? throw new ArgumentNullException(nameof(orderBookInitializer));
         }

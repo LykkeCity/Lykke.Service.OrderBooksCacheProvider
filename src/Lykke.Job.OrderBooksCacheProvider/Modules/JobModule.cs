@@ -81,7 +81,7 @@ namespace Lykke.Job.OrderBooksCacheProvider.Modules
                 .AutoActivate()
                 .SingleInstance();
 
-            builder.RegisterType<ForcedOrderbookUpdated>()
+            builder.RegisterType<ForcedOrderbookUpdater>()
                 .WithParameter(TypedParameter.From(_settings.CacheSettings.ForceUpdateInterval))
                 .As<IStartable>()
                 .AutoActivate()
