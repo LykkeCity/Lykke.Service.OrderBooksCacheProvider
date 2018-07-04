@@ -15,6 +15,8 @@ namespace Lykke.Job.OrderBooksCacheProvider.Core
         public string RedisConfiguration { get; set; }
 
         public string OrderBooksCacheKeyPattern { get; set; }
+
+        public TimeSpan ForceUpdateInterval { get; set; }
     }
 
     public static class CacheSettingsExt
