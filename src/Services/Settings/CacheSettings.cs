@@ -13,7 +13,7 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services.Settings
 
         public string GetOrderBookKey(string assetPairId, bool isBuy)
         {
-            return FinanceDataCacheInstance + ":" + string.Format(OrderBooksCacheKeyPattern, assetPairId, isBuy);
+            return FinanceDataCacheInstance + string.Format(OrderBooksCacheKeyPattern, assetPairId, isBuy);
         }
     }
 }
