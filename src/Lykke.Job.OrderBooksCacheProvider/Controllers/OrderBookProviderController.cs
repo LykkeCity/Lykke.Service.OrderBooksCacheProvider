@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Net;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Lykke.Common.Api.Contract.Responses;
+﻿using Lykke.Common.Api.Contract.Responses;
 using Lykke.Job.OrderBooksCacheProvider.Core.Domain;
 using Lykke.Job.OrderBooksCacheProvider.Core.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Lykke.Job.OrderBooksCacheProvider.Controllers
 {
