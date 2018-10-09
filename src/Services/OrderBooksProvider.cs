@@ -1,34 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Common.Log;
-using Lykke.Job.OrderBooksCacheProvider.Core;
+﻿using Common.Log;
+using Lykke.Common.Log;
 using Lykke.Job.OrderBooksCacheProvider.Core.Domain;
 using Lykke.Job.OrderBooksCacheProvider.Core.Services;
-using Microsoft.Extensions.Caching.Distributed;
+using Lykke.Job.OrderBooksCacheProvider.Services.Settings;
 using Newtonsoft.Json;
+using StackExchange.Redis;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Lykke.Job.OrderBooksCacheProvider.Services
 {
     public class OrderBooksProvider : IOrderBooksProvider
     {
-        private readonly IDistributedCache _cache;
+        private readonly ConnectionMultiplexer _redis;
         private readonly CacheSettings _settings;
         private readonly ILog _log;
 
-        public OrderBooksProvider(IDistributedCache cache, CacheSettings settings, ILog log)
+        public OrderBooksProvider(CacheSettings settings, ILogFactory logFactory, ConnectionMultiplexer redis)
         {
-            _cache = cache;
             _settings = settings;
-            _log = log;
+            _redis = redis;
+            _log = logFactory.CreateLog(this);
         }
 
         public async Task<IEnumerable<OrderBook>> GetCurrentOrderBooksAsync(string assetPair)
         {
             try
             {
-                var buyTask = _cache.GetStringAsync(_settings.GetOrderBookKey(assetPair, true));
-                var sellTask = _cache.GetStringAsync(_settings.GetOrderBookKey(assetPair, false));
+
+                var buyTask = _redis.GetDatabase().HashGetAsync(_settings.GetOrderBookKey(assetPair, true), "data");
+                var sellTask = _redis.GetDatabase().HashGetAsync(_settings.GetOrderBookKey(assetPair, false), "data");
                 await Task.WhenAll(buyTask, sellTask);
 
                 if (string.IsNullOrEmpty(buyTask.Result) || string.IsNullOrEmpty(sellTask.Result))
@@ -43,7 +45,7 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
             }
             catch (Exception ex)
             {
-                _log.WriteWarning(nameof(GetCurrentOrderBooksAsync), assetPair, "", ex);
+                _log.Warning(nameof(GetCurrentOrderBooksAsync), ex, assetPair);
                 throw;
             }
         }

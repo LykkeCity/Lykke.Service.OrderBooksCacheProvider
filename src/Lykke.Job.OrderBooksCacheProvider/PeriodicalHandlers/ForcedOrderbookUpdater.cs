@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using Common;
-using Common.Log;
+﻿using Common;
 using JetBrains.Annotations;
+using Lykke.Common.Log;
 using Lykke.Job.OrderBooksCacheProvider.Core.Services;
+using System;
+using System.Threading.Tasks;
 
 namespace Lykke.Job.OrderBooksCacheProvider.PeriodicalHandlers
 {
@@ -16,8 +16,8 @@ namespace Lykke.Job.OrderBooksCacheProvider.PeriodicalHandlers
         public ForcedOrderbookUpdater(
             [NotNull] IOrderBookInitializer orderBookInitializer,
             TimeSpan checkInterval,
-            ILog log = null)
-            : base(nameof(ForcedOrderbookUpdater), (int)checkInterval.TotalMilliseconds, log)
+            ILogFactory logFactory)
+            : base(checkInterval, logFactory, nameof(ForcedOrderbookUpdater))
         {
             _orderBookInitializer = orderBookInitializer ?? throw new ArgumentNullException(nameof(orderBookInitializer));
         }

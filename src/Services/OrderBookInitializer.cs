@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Common;
+using Common.Log;
+using Lykke.Common.Log;
+using Lykke.Job.OrderBooksCacheProvider.Core.Domain;
+using Lykke.Job.OrderBooksCacheProvider.Core.Services;
+using Lykke.Job.OrderBooksCacheProvider.Services.Settings;
+using RestSharp;
+using StackExchange.Redis;
+using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Common;
-using Common.Log;
-using Lykke.Job.OrderBooksCacheProvider.Core;
-using Lykke.Job.OrderBooksCacheProvider.Core.Domain;
-using Lykke.Job.OrderBooksCacheProvider.Core.Services;
-using RestSharp;
-using StackExchange.Redis;
 
 namespace Lykke.Job.OrderBooksCacheProvider.Services
 {
@@ -21,17 +22,17 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
         private readonly ConnectionMultiplexer _redis;
 
         public OrderBookInitializer(
-            IOrderBooksHandler orderBooksHandler, 
+            IOrderBooksHandler orderBooksHandler,
             IRestClient restClient,
             CacheSettings cacheSettings,
             MatchingEngineSettings settings,
-            ILog log,
-            ConnectionMultiplexer redis)
+            ConnectionMultiplexer redis,
+            ILogFactory logFactory)
         {
             _orderBooksHandler = orderBooksHandler;
             _restClient = restClient;
             _cacheSettings = cacheSettings;
-            _log = log;
+            _log = logFactory.CreateLog(this);
             _redis = redis;
             _restClient.BaseUrl = settings.GetOrderBookInitUri();
         }
@@ -61,20 +62,21 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
                 }
                 else
                 {
-                    await _log.WriteWarningAsync("OrderBookInitializer", "InitOrderBooks", "", "No orderbooks on init");
+                    _log.Warning("No orderbooks on init");
                 }
 
                 return;
             }
 
             var exception = response.ErrorException ?? new Exception(response.Content);
-            await _log.WriteErrorAsync("OrderBookInitializer", "InitOrderBooks", "", exception);
+            _log.Error("InitOrderBooks", exception);
 
             throw exception;
         }
 
         private void ClearExistingRecords()
         {
+            return;
             var keys = _redis.GetServer(_redis.GetEndPoints()[0])
                 .Keys(pattern: _cacheSettings.FinanceDataCacheInstance + "*").ToArray();
             _redis.GetDatabase().KeyDelete(keys);
