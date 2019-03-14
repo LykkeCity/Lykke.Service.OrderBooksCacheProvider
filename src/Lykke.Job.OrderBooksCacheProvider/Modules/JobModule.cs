@@ -84,15 +84,6 @@ namespace Lykke.Job.OrderBooksCacheProvider.Modules
             var redis = ConnectionMultiplexer.Connect(options);
 
             builder.RegisterInstance(redis).SingleInstance();
-            builder.Register(
-                c =>
-                    c.Resolve<ConnectionMultiplexer>()
-                        .GetServer(redis.GetEndPoints()[0]));
-
-            builder.Register(
-                c =>
-                    c.Resolve<ConnectionMultiplexer>()
-                        .GetDatabase());
         }
     }
 }
