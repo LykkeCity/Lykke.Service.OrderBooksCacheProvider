@@ -1,51 +1,36 @@
-﻿using System;
-using Autofac;
-using Common.Log;
-using Lykke.Job.OrderBooksCacheProvider.Core;
+﻿using Autofac;
 using Lykke.Job.OrderBooksCacheProvider.Core.Services;
 using Lykke.Job.OrderBooksCacheProvider.PeriodicalHandlers;
 using Lykke.Job.OrderBooksCacheProvider.Services;
 using Lykke.RabbitMqBroker.Subscriber;
+using Lykke.Sdk;
 using Lykke.SettingsReader;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Redis;
 using RestSharp;
+using StackExchange.Redis;
+using System;
 
 namespace Lykke.Job.OrderBooksCacheProvider.Modules
 {
     public class JobModule : Module
     {
         private readonly OrderBooksCacheProviderSettings _settings;
-        private readonly ILog _log;
 
-        public JobModule(IReloadingManager<AppSettings> settings, ILog log)
+        public JobModule(IReloadingManager<AppSettings> settings)
         {
             _settings = settings.CurrentValue.OrderBooksCacheProvider;
-            _log = log;
         }
 
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<HealthService>()
-                .As<IHealthService>()
-                .SingleInstance();
-
             builder.RegisterType<StartupManager>()
                 .As<IStartupManager>();
 
-            builder.RegisterInstance(_log);
-
-            builder.Register(x => new RedisCache(new RedisCacheOptions
-            {
-                Configuration = _settings.CacheSettings.RedisConfiguration,
-                InstanceName = _settings.CacheSettings.FinanceDataCacheInstance
-            })).As<IDistributedCache>();
 
             var exchangeName = _settings.MatchingEngine.RabbitMq.ExchangeOrderbook;
             var rabbitSettings = new RabbitMqSubscriptionSettings
             {
                 ConnectionString = _settings.MatchingEngine.RabbitMq.ConnectionString,
-                QueueName = $"{exchangeName}.OrderBooksCacheProvider",
+                QueueName = $"{exchangeName}.{_settings.MatchingEngine.RabbitMq.QueueName}",
                 ExchangeName = exchangeName
             };
 
@@ -71,6 +56,7 @@ namespace Lykke.Job.OrderBooksCacheProvider.Modules
                 .SingleInstance();
 
             RegisterPeriodicalHandlers(builder);
+            RegisterRedis(builder);
         }
 
         private void RegisterPeriodicalHandlers(ContainerBuilder builder)
@@ -86,6 +72,18 @@ namespace Lykke.Job.OrderBooksCacheProvider.Modules
                 .As<IStartable>()
                 .AutoActivate()
                 .SingleInstance();
+        }
+
+        private void RegisterRedis(ContainerBuilder builder)
+        {
+            System.Threading.ThreadPool.SetMinThreads(100, 100);
+            var options = ConfigurationOptions.Parse(_settings.CacheSettings.RedisConfiguration);
+            options.ReconnectRetryPolicy = new ExponentialRetry(3000, 15000);
+            options.ClientName = "Lykke.Job.OrderBooksCacheProvider";
+
+            var redis = ConnectionMultiplexer.Connect(options);
+
+            builder.RegisterInstance(redis).SingleInstance();
         }
     }
 }

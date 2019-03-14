@@ -1,10 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using Common.Log;
+﻿using Lykke.Common.Log;
 using Lykke.Job.OrderBooksCacheProvider.Core.Domain;
 using Lykke.Job.OrderBooksCacheProvider.Core.Services;
 using Lykke.RabbitMqBroker;
 using Lykke.RabbitMqBroker.Subscriber;
+using System;
+using System.Threading.Tasks;
 
 namespace Lykke.Job.OrderBooksCacheProvider.Services
 {
@@ -17,18 +17,17 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
 
         public OrderBookReader(RabbitMqSubscriptionSettings settings,
             IOrderBooksHandler orderBooksHandler,
-            ILog log)
+            ILogFactory logFactory)
         {
             _orderBooksHandler = orderBooksHandler;
 
-            _subscriber =
-                new RabbitMqSubscriber<OrderBook>(settings,
-                        new ResilientErrorHandlingStrategy(log, settings, TimeSpan.FromSeconds(10),
-                            next: new DefaultErrorHandlingStrategy(log, settings)))
-                    .SetMessageDeserializer(new JsonMessageDeserializer<OrderBook>())
-                    .SetMessageReadStrategy(new MessageReadWithTemporaryQueueStrategy())
-                    .Subscribe(HandleData)
-                    .SetLogger(log);
+            var strategy = new ResilientErrorHandlingStrategy(logFactory, settings, TimeSpan.FromSeconds(10),
+                next: new DefaultErrorHandlingStrategy(logFactory, settings));
+            _subscriber = new RabbitMqSubscriber<OrderBook>(logFactory, settings, strategy)
+                .SetMessageDeserializer(new JsonMessageDeserializer<OrderBook>())
+                .SetMessageReadStrategy(new MessageReadWithTemporaryQueueStrategy())
+                .SetPrefetchCount(300)
+                .Subscribe(HandleData);
         }
 
         public void StartRead()

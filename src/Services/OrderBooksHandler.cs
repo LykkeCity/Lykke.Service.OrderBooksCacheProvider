@@ -1,36 +1,37 @@
-﻿using System;
-using System.Threading.Tasks;
-using Common;
+﻿using Common;
 using Common.Log;
-using Lykke.Job.OrderBooksCacheProvider.Core;
+using Lykke.Common.Log;
 using Lykke.Job.OrderBooksCacheProvider.Core.Domain;
 using Lykke.Job.OrderBooksCacheProvider.Core.Services;
-using Microsoft.Extensions.Caching.Distributed;
+using Lykke.Job.OrderBooksCacheProvider.Services.Settings;
+using StackExchange.Redis;
+using System;
+using System.Threading.Tasks;
 
 namespace Lykke.Job.OrderBooksCacheProvider.Services
 {
     public class OrderBooksHandler : IOrderBooksHandler
     {
-        private readonly IDistributedCache _cache;
+        private readonly ConnectionMultiplexer _redis;
         private readonly CacheSettings _settings;
         private readonly ILog _log;
 
-        public OrderBooksHandler(IDistributedCache cache, CacheSettings settings, ILog log)
+        public OrderBooksHandler(CacheSettings settings, ILogFactory logFactory, ConnectionMultiplexer redis)
         {
-            _cache = cache;
             _settings = settings;
-            _log = log.CreateComponentScope(nameof(OrderBooksHandler));
+            _redis = redis;
+            _log = logFactory.CreateLog(this);
         }
 
         public async Task HandleOrderBook(OrderBook orderBook)
         {
             try
             {
-                await _cache.SetStringAsync(_settings.GetOrderBookKey(orderBook.AssetPair, orderBook.IsBuy), orderBook.ToJson());
+                await _redis.GetDatabase().HashSetAsync(_settings.GetOrderBookKey(orderBook.AssetPair, orderBook.IsBuy), "data", orderBook.ToJson());
             }
             catch (Exception ex)
             {
-                _log.WriteWarning(nameof(HandleOrderBook), orderBook, "", ex);
+                _log.Warning("Redis problem", ex);
                 throw;
             }
         }

@@ -1,9 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using Common;
+﻿using Common;
 using Common.Log;
 using JetBrains.Annotations;
+using Lykke.Common.Log;
 using Lykke.Job.OrderBooksCacheProvider.Core.Services;
+using System;
+using System.Threading.Tasks;
 
 namespace Lykke.Job.OrderBooksCacheProvider.PeriodicalHandlers
 {
@@ -17,12 +18,12 @@ namespace Lykke.Job.OrderBooksCacheProvider.PeriodicalHandlers
             [NotNull] IOrderBookInitializer orderBookInitializer,
             [NotNull] IOrderBookReader orderBookReader,
             TimeSpan checkInterval,
-            ILog log = null)
-            : base(nameof(OrderbookFlowChecker), (int)checkInterval.TotalMilliseconds, log)
+            ILogFactory logFactory)
+            : base(checkInterval, logFactory, nameof(OrderbookFlowChecker))
         {
             _orderBookInitializer = orderBookInitializer ?? throw new ArgumentNullException(nameof(orderBookInitializer));
             _orderBookReader = orderBookReader ?? throw new ArgumentNullException(nameof(orderBookReader));
-            _log = log.CreateComponentScope(nameof(OrderbookFlowChecker));
+            _log = logFactory.CreateLog(this);
         }
 
         public override async Task Execute()
@@ -33,7 +34,7 @@ namespace Lykke.Job.OrderBooksCacheProvider.PeriodicalHandlers
             if (_orderBookReader.LastReceivedTimeStamp > DateTime.UtcNow.AddMinutes(-1))
                 return; // it's ok: we receive messages more than once a minute.
 
-            _log.WriteWarning(nameof(OrderbookFlowChecker), null, "No orderbook updates received for the last minute.");
+            _log.Warning("No orderbook updates received for the last minute.");
             await _orderBookInitializer.InitOrderBooks(false);
         }
     }
