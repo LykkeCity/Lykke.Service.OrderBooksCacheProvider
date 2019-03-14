@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>Lykke.Job.OrderBooksCacheProvider.Services</AssemblyName>
     <Version>1.0.0</Version>
     <RootNamespace>Lykke.Job.OrderBooksCacheProvider.Services</RootNamespace>
