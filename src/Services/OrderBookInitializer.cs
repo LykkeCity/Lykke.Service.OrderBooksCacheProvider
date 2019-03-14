@@ -76,7 +76,6 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
 
         private void ClearExistingRecords()
         {
-            return;
             var keys = _redis.GetServer(_redis.GetEndPoints()[0])
                 .Keys(pattern: _cacheSettings.FinanceDataCacheInstance + "*").ToArray();
             _redis.GetDatabase().KeyDelete(keys);
