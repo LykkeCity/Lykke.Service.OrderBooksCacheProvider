@@ -24,9 +24,10 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services
             var strategy = new ResilientErrorHandlingStrategy(logFactory, settings, TimeSpan.FromSeconds(10),
                 next: new DefaultErrorHandlingStrategy(logFactory, settings));
             _subscriber = new RabbitMqSubscriber<OrderBook>(logFactory, settings, strategy)
-                    .SetMessageDeserializer(new JsonMessageDeserializer<OrderBook>())
-                    .SetMessageReadStrategy(new MessageReadWithTemporaryQueueStrategy())
-                    .Subscribe(HandleData);
+                .SetMessageDeserializer(new JsonMessageDeserializer<OrderBook>())
+                .SetMessageReadStrategy(new MessageReadWithTemporaryQueueStrategy())
+                .SetPrefetchCount(300)
+                .Subscribe(HandleData);
         }
 
         public void StartRead()
