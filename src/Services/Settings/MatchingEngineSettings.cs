@@ -25,5 +25,7 @@ namespace Lykke.Job.OrderBooksCacheProvider.Services.Settings
         [AmqpCheck]
         public string ConnectionString { get; set; }
         public string ExchangeOrderbook { get; set; }
+        [Optional]
+        public string QueueName { get; set; } = "OrderBooksCacheProvider";
     }
 }

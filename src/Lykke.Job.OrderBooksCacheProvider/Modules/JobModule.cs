@@ -30,7 +30,7 @@ namespace Lykke.Job.OrderBooksCacheProvider.Modules
             var rabbitSettings = new RabbitMqSubscriptionSettings
             {
                 ConnectionString = _settings.MatchingEngine.RabbitMq.ConnectionString,
-                QueueName = $"{exchangeName}.OrderBooksCacheProvider",
+                QueueName = $"{exchangeName}.{_settings.MatchingEngine.RabbitMq.QueueName}",
                 ExchangeName = exchangeName
             };
 
